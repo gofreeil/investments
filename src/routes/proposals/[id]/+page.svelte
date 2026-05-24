@@ -14,6 +14,13 @@
     let newComment = $state('');
     let selectedVote = $state<'yes' | 'no' | 'abstain' | null>(null);
 
+    // סימולטור השקעה
+    let simAmount = $state(500_000);
+    const simSharePct = $derived(proposal ? (simAmount / proposal.askingPrice) * 100 : 0);
+    const simMonthlyIncome = $derived(proposal ? (simAmount * proposal.estimatedReturn / 100) / 12 : 0);
+    const simYearlyIncome = $derived(proposal ? simAmount * proposal.estimatedReturn / 100 : 0);
+    const simPaybackYears = $derived(proposal && proposal.estimatedReturn > 0 ? 100 / proposal.estimatedReturn : 0);
+
     function submitVote() {
         if (!selectedVote || !proposal) return;
         alert(`(מוקאפ) ההצבעה "${selectedVote === 'yes' ? 'בעד' : selectedVote === 'no' ? 'נגד' : 'נמנע'}" נשמרה`);
@@ -75,6 +82,62 @@
             <div class="text-xs text-gray-400">סף כניסה לחבר</div>
             <div class="text-xl font-black text-blue-300 mt-1">{formatCurrency(proposal.minInvestment)}</div>
         </div>
+    </section>
+
+    <!-- Investment Simulator -->
+    <section class="mb-8 rounded-2xl bg-gradient-to-br from-purple-900/30 to-indigo-900/20 border border-purple-500/30 p-5">
+        <h2 class="text-xl font-bold text-white mb-1">🎚 סימולטור השקעה</h2>
+        <p class="text-sm text-purple-200/80 mb-5">כמה תקבל אם תיכנס? הזיז את הסליידר</p>
+
+        <div class="mb-4">
+            <div class="flex items-center justify-between mb-2">
+                <label for="sim-amount" class="text-sm font-bold text-white">סכום ההשקעה שלך</label>
+                <input
+                    type="number"
+                    bind:value={simAmount}
+                    min={proposal.minInvestment}
+                    max={proposal.askingPrice}
+                    step="10000"
+                    class="w-36 bg-white/10 border border-white/20 rounded-lg px-3 py-1 text-white text-left font-bold focus:outline-none focus:border-purple-400"
+                />
+            </div>
+            <input
+                id="sim-amount"
+                type="range"
+                bind:value={simAmount}
+                min={proposal.minInvestment}
+                max={proposal.askingPrice}
+                step="10000"
+                class="w-full accent-purple-500"
+            />
+            <div class="flex justify-between text-xs text-gray-400 mt-1">
+                <span>סף: {formatCurrency(proposal.minInvestment)}</span>
+                <span>מקס': {formatCurrency(proposal.askingPrice)}</span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+            <div class="bg-white/10 rounded-xl p-3">
+                <div class="text-xs text-purple-200">אחזקה שלך</div>
+                <div class="text-xl font-black text-white mt-1">{simSharePct.toFixed(2)}%</div>
+            </div>
+            <div class="bg-white/10 rounded-xl p-3">
+                <div class="text-xs text-purple-200">הכנסה חודשית</div>
+                <div class="text-xl font-black text-emerald-300 mt-1">{formatCurrency(simMonthlyIncome)}</div>
+            </div>
+            <div class="bg-white/10 rounded-xl p-3">
+                <div class="text-xs text-purple-200">הכנסה שנתית</div>
+                <div class="text-xl font-black text-emerald-300 mt-1">{formatCurrency(simYearlyIncome)}</div>
+            </div>
+            <div class="bg-white/10 rounded-xl p-3">
+                <div class="text-xs text-purple-200">החזר השקעה</div>
+                <div class="text-xl font-black text-amber-300 mt-1">~{simPaybackYears.toFixed(1)} שנים</div>
+            </div>
+        </div>
+
+        <p class="text-xs text-purple-200/70 mt-4">
+            💡 חישוב על בסיס תשואה צפויה של {proposal.estimatedReturn}% שנתי. לא כולל עליית ערך הון.
+        </p>
     </section>
 
     <!-- Voting -->

@@ -8,6 +8,8 @@
         { href: '/', label: 'דשבורד', icon: '📊' },
         { href: '/assets', label: 'נכסים', icon: '🏢' },
         { href: '/proposals', label: 'הצעות', icon: '💡' },
+        { href: '/market', label: 'שוק', icon: '🔄' },
+        { href: '/calendar', label: 'יומן', icon: '📅' },
         { href: '/members', label: 'חברים', icon: '👥' }
     ];
 

@@ -3,8 +3,17 @@
         assets, proposals, members, currentMemberId, getMember,
         formatCurrency, totalPortfolioValue, totalMonthlyIncome,
         totalInvested, memberHoldingInAsset, assetStatusLabels,
-        proposalApprovalPercent
+        proposalApprovalPercent, activities, calendarEvents,
+        eventTypeIcons
     } from '$lib/mockData';
+
+    const today = '2026-05-24';
+    const nextEvent = [...calendarEvents]
+        .filter(e => e.date >= today)
+        .sort((a, b) => a.date.localeCompare(b.date))[0];
+    const recentActivities = [...activities]
+        .sort((a, b) => b.timestamp.localeCompare(a.timestamp))
+        .slice(0, 6);
 
     const me = getMember(currentMemberId)!;
     const myPortfolio = totalPortfolioValue(currentMemberId);
@@ -19,11 +28,28 @@
     const totalGroupIncome = assets.reduce((s, a) => s + a.monthlyIncome, 0);
 </script>
 
-<section class="mb-8">
-    <h1 class="text-3xl md:text-4xl font-black text-white">
-        שלום, {me.name.split(' ')[0]} {me.avatar}
-    </h1>
-    <p class="text-gray-400 mt-1">ברוך/ה הבא/ה לפלטפורמת קבוצת המשקיעים</p>
+<section class="mb-8 flex items-start justify-between gap-4 flex-wrap">
+    <div>
+        <h1 class="text-3xl md:text-4xl font-black text-white">
+            שלום, {me.name.split(' ')[0]} {me.avatar}
+        </h1>
+        <p class="text-gray-400 mt-1">ברוך/ה הבא/ה לפלטפורמת קבוצת המשקיעים</p>
+    </div>
+    {#if nextEvent}
+        <a
+            href="/calendar"
+            class="rounded-2xl bg-gradient-to-l from-amber-900/30 to-orange-900/20 border border-amber-500/30 px-4 py-3 hover:border-amber-400/50 transition-all max-w-sm"
+        >
+            <div class="text-xs text-amber-300 font-bold mb-1">📅 האירוע הקרוב</div>
+            <div class="flex items-center gap-2">
+                <span class="text-2xl">{eventTypeIcons[nextEvent.type]}</span>
+                <div class="min-w-0">
+                    <div class="font-bold text-white truncate">{nextEvent.title}</div>
+                    <div class="text-xs text-gray-400">{nextEvent.date} · {nextEvent.time}</div>
+                </div>
+            </div>
+        </a>
+    {/if}
 </section>
 
 <section class="mb-10" aria-label="הסטטיסטיקות שלי">
@@ -110,6 +136,30 @@
                         </div>
                     </div>
                 </div>
+            </a>
+        {/each}
+    </div>
+</section>
+
+<section class="mb-10">
+    <h2 class="text-xl font-bold text-white mb-4">🔔 פעילות אחרונה בקבוצה</h2>
+    <div class="rounded-2xl bg-white/5 border border-white/10 divide-y divide-white/5">
+        {#each recentActivities as act (act.id)}
+            {@const member = getMember(act.memberId)}
+            <a
+                href={act.href ?? '#'}
+                class="flex items-center gap-3 p-3 hover:bg-white/5 transition-colors first:rounded-t-2xl last:rounded-b-2xl"
+            >
+                <span class="text-2xl flex-shrink-0">{act.icon}</span>
+                <span class="text-xl flex-shrink-0">{member?.avatar}</span>
+                <div class="flex-1 min-w-0">
+                    <div class="text-sm text-white">
+                        <span class="font-bold">{member?.name}</span>
+                        <span class="text-gray-300">— {act.text}</span>
+                    </div>
+                    <div class="text-xs text-gray-500 mt-0.5">{act.timestamp}</div>
+                </div>
+                <span class="text-gray-500 text-sm">←</span>
             </a>
         {/each}
     </div>

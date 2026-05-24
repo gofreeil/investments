@@ -309,6 +309,175 @@ export function proposalApprovalPercent(proposal: Proposal): { yes: number; no: 
     };
 }
 
+// ===== אירועים =====
+export type EventType = 'meeting' | 'site-visit' | 'deadline' | 'signing';
+
+export interface CalendarEvent {
+    id: string;
+    title: string;
+    type: EventType;
+    date: string;
+    time: string;
+    location: string;
+    description: string;
+    relatedAssetId?: string;
+    relatedProposalId?: string;
+    rsvps: { memberId: string; status: 'yes' | 'no' | 'maybe' }[];
+}
+
+export const calendarEvents: CalendarEvent[] = [
+    {
+        id: 'e1',
+        title: 'אסיפת חברים – סקירת רבעון Q2',
+        type: 'meeting',
+        date: '2026-06-03',
+        time: '20:00',
+        location: 'משרדי יוסי, רח\' ההסתדרות 14 ת"א',
+        description: 'סקירת ביצועי הנכסים, אישור דוחות והצגת הצעות חדשות. כיבוד קל.',
+        rsvps: [
+            { memberId: 'm1', status: 'yes' },
+            { memberId: 'm2', status: 'yes' },
+            { memberId: 'm3', status: 'yes' },
+            { memberId: 'm4', status: 'maybe' },
+            { memberId: 'm5', status: 'yes' }
+        ]
+    },
+    {
+        id: 'e2',
+        title: 'ביקור בנכס – דופלקס רמת גן',
+        type: 'site-visit',
+        date: '2026-05-28',
+        time: '17:30',
+        location: 'רח\' ביאליק 23, רמת גן',
+        description: 'סיור משותף בנכס המוצע. הבעלים יציג ונפגוש את השכנים.',
+        relatedProposalId: 'p1',
+        rsvps: [
+            { memberId: 'm1', status: 'yes' },
+            { memberId: 'm3', status: 'yes' },
+            { memberId: 'm5', status: 'maybe' }
+        ]
+    },
+    {
+        id: 'e3',
+        title: 'דדליין הצבעה – קפיטריה נתניה',
+        type: 'deadline',
+        date: '2026-05-30',
+        time: '23:59',
+        location: 'אונליין',
+        description: 'יום אחרון להצבעה על רכישת הקפיטריה.',
+        relatedProposalId: 'p2',
+        rsvps: []
+    },
+    {
+        id: 'e4',
+        title: 'חתימת חוזה – מגרש חריש',
+        type: 'signing',
+        date: '2026-06-12',
+        time: '11:00',
+        location: 'משרד עו"ד גולדברג, חיפה',
+        description: 'חתימה סופית על העברת הבעלות וההיתר.',
+        relatedAssetId: 'a3',
+        rsvps: [
+            { memberId: 'm1', status: 'yes' },
+            { memberId: 'm2', status: 'maybe' }
+        ]
+    }
+];
+
+// ===== פיד פעילות =====
+export type ActivityType = 'vote' | 'comment' | 'proposal-added' | 'income' | 'event-created' | 'market-listing';
+
+export interface Activity {
+    id: string;
+    type: ActivityType;
+    memberId: string;
+    text: string;
+    timestamp: string;
+    href?: string;
+    icon: string;
+}
+
+export const activities: Activity[] = [
+    { id: 'act1', type: 'income', memberId: 'm1', text: 'התקבל שכ"ד מבניין הרצל 42 (38,000 ₪)', timestamp: '2026-05-22', href: '/assets/a1', icon: '💰' },
+    { id: 'act2', type: 'vote', memberId: 'm3', text: 'הצביע בעד "דופלקס רמת גן"', timestamp: '2026-05-22', href: '/proposals/p1', icon: '✅' },
+    { id: 'act3', type: 'comment', memberId: 'm2', text: 'הוסיף תגובה ל"קפיטריה נתניה"', timestamp: '2026-05-20', href: '/proposals/p2', icon: '💬' },
+    { id: 'act4', type: 'market-listing', memberId: 'm5', text: 'פרסם הצעת מכירה: 5% מבניין הרצל', timestamp: '2026-05-19', href: '/market', icon: '🔄' },
+    { id: 'act5', type: 'proposal-added', memberId: 'm6', text: 'העלה הצעה חדשה: "קפיטריה נתניה"', timestamp: '2026-05-18', href: '/proposals/p2', icon: '💡' },
+    { id: 'act6', type: 'event-created', memberId: 'm1', text: 'יצר אירוע: אסיפת חברים Q2 (3.6.26)', timestamp: '2026-05-17', href: '/calendar', icon: '📅' },
+    { id: 'act7', type: 'vote', memberId: 'm4', text: 'הצביע נגד "קפיטריה נתניה"', timestamp: '2026-05-19', href: '/proposals/p2', icon: '❌' },
+    { id: 'act8', type: 'proposal-added', memberId: 'm1', text: 'העלה הצעה חדשה: "מחסן ברקן"', timestamp: '2026-05-22', href: '/proposals/p3', icon: '💡' }
+];
+
+// ===== שוק פנימי – מסחר משני באחזקות =====
+export type ListingType = 'sell' | 'buy';
+export type ListingStatus = 'open' | 'matched' | 'closed';
+
+export interface MarketListing {
+    id: string;
+    type: ListingType;
+    status: ListingStatus;
+    memberId: string;
+    assetId: string;
+    sharesPercent: number; // כמה אחוזים רוצה למכור/לקנות
+    askPrice: number; // מחיר מבוקש לעסקה
+    createdAt: string;
+    note: string;
+    interestedMemberIds: string[];
+}
+
+export const marketListings: MarketListing[] = [
+    {
+        id: 'ml1',
+        type: 'sell',
+        status: 'open',
+        memberId: 'm5',
+        assetId: 'a1',
+        sharesPercent: 5,
+        askPrice: 750_000,
+        createdAt: '2026-05-19',
+        note: 'מוכר חצי מהחלק שלי. צריך נזילות לפרויקט אחר. גמיש במחיר.',
+        interestedMemberIds: ['m1', 'm2']
+    },
+    {
+        id: 'ml2',
+        type: 'buy',
+        status: 'open',
+        memberId: 'm6',
+        assetId: 'a1',
+        sharesPercent: 10,
+        askPrice: 1_400_000,
+        createdAt: '2026-05-21',
+        note: 'מעוניינת להגדיל אחזקה בבניין. פתוחה לדבר עם כל מי שרוצה לצאת.',
+        interestedMemberIds: []
+    },
+    {
+        id: 'ml3',
+        type: 'sell',
+        status: 'matched',
+        memberId: 'm4',
+        assetId: 'a4',
+        sharesPercent: 10,
+        askPrice: 105_000,
+        createdAt: '2026-05-08',
+        note: 'נמצא קונה — מחכים לחתימה.',
+        interestedMemberIds: ['m3']
+    }
+];
+
+export const eventTypeLabels: Record<EventType, string> = {
+    'meeting': 'אסיפה',
+    'site-visit': 'ביקור בנכס',
+    'deadline': 'דדליין',
+    'signing': 'חתימה'
+};
+
+export const eventTypeIcons: Record<EventType, string> = {
+    'meeting': '👥',
+    'site-visit': '🚗',
+    'deadline': '⏰',
+    'signing': '✍️'
+};
+
 export const assetTypeLabels: Record<AssetType, string> = {
     'real-estate': 'נדל"ן',
     'business': 'עסק',
