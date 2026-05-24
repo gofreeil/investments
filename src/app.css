@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+@theme {
+    --color-primary: #2563eb;
+    --color-primary-light: #60a5fa;
+    --color-bg-dark: #070b14;
+}
+
+:root {
+    --bg-deep: #070b14;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Assistant', sans-serif;
+    background:
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(99, 102, 241, 0.15), transparent),
+        var(--bg-deep);
+    background-attachment: fixed;
+    color: #f8fafc;
+    direction: rtl;
+    font-size: 16px;
+    min-height: 100vh;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+select option,
+select optgroup {
+    background-color: #ffffff;
+    color: #0f172a;
+}
+select option:checked {
+    background-color: #e0e7ff;
+    color: #0f172a;
+    font-weight: 700;
+}
+
+.skip-link {
+    position: absolute;
+    top: -100px;
+    right: 0;
+    background: #005fcc;
+    color: #ffffff;
+    padding: 10px 20px;
+    z-index: 99999;
+    font-weight: 700;
+    border-radius: 0 0 6px 6px;
+    text-decoration: none;
+    transition: top 0.2s ease;
+}
+.skip-link:focus { top: 0; }
+
+:focus-visible {
+    outline: 3px solid #60a5fa !important;
+    outline-offset: 3px !important;
+    border-radius: 3px;
+}
+
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
