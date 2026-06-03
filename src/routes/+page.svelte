@@ -155,7 +155,7 @@
                 <div class="flex-1 min-w-0">
                     <div class="text-sm text-white">
                         <span class="font-bold">{member?.name}</span>
-                        <span class="text-gray-300">— {act.text}</span>
+                        <span class="text-gray-300">- {act.text}</span>
                     </div>
                     <div class="text-xs text-gray-500 mt-0.5">{act.timestamp}</div>
                 </div>

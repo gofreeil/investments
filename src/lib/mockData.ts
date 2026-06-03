@@ -459,7 +459,7 @@ export const marketListings: MarketListing[] = [
         sharesPercent: 10,
         askPrice: 105_000,
         createdAt: '2026-05-08',
-        note: 'נמצא קונה — מחכים לחתימה.',
+        note: 'נמצא קונה - מחכים לחתימה.',
         interestedMemberIds: ['m3']
     }
 ];

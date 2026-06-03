@@ -19,7 +19,7 @@
 <section class="mb-6 flex items-start justify-between flex-wrap gap-4">
     <div>
         <h1 class="text-3xl font-black text-white mb-1">🔄 שוק פנימי</h1>
-        <p class="text-gray-400">מסחר באחזקות בין חברי הקבוצה — מי שרוצה לצאת או להגדיל פוזיציה</p>
+        <p class="text-gray-400">מסחר באחזקות בין חברי הקבוצה - מי שרוצה לצאת או להגדיל פוזיציה</p>
     </div>
     <button class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold hover:opacity-90 shadow-lg">
         ➕ פרסם הצעה
