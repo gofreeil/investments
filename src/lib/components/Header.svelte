@@ -2,6 +2,9 @@
     import { page } from '$app/state';
     import { currentMemberId, getMember } from '$lib/mockData';
 
+    // משתמש מחובר (מגיע מ-+layout.server דרך +layout.svelte); null = אנונימי
+    let { user = null }: { user?: { name: string; email: string } | null } = $props();
+
     const me = getMember(currentMemberId)!;
 
     const links = [
@@ -51,6 +54,26 @@
                     <div class="text-sm font-bold text-white">{me.name}</div>
                 </div>
             </div>
+
+            <!-- התחברות / אזור אישי -->
+            {#if user}
+                <a
+                    href="/profile"
+                    class="flex items-center gap-2 rounded-xl bg-white/10 hover:bg-white/20 px-3 py-2 text-sm font-bold text-white transition-colors"
+                    title="האזור האישי"
+                >
+                    <span class="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-amber-500 to-pink-600 text-xs">👤</span>
+                    <span class="hidden sm:inline max-w-[120px] truncate">{user.name || user.email}</span>
+                </a>
+            {:else}
+                <a
+                    href="/login?redirect=/profile"
+                    class="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-pink-600 hover:from-amber-400 hover:to-pink-500 px-3 py-2 text-sm font-bold text-white transition-all"
+                >
+                    <span>🕊️</span>
+                    <span class="hidden sm:inline">התחברות</span>
+                </a>
+            {/if}
             <button
                 class="md:hidden p-2 rounded-lg bg-white/5 border border-white/10 text-white"
                 onclick={() => mobileOpen = !mobileOpen}

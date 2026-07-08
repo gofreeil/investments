@@ -1,0 +1,12 @@
+import { redirect } from '@sveltejs/kit';
+import type { PageServerLoad } from './$types';
+
+export const prerender = false;
+
+export const load: PageServerLoad = async ({ locals }) => {
+	const session = await locals.auth();
+	if (!session?.user) throw redirect(302, '/login?redirect=/profile');
+	return {
+		user: { name: session.user.name ?? '', email: session.user.email ?? '' }
+	};
+};

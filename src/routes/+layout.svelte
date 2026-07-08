@@ -3,7 +3,7 @@
     import Header from '$lib/components/Header.svelte';
     import Footer from '$lib/components/Footer.svelte';
 
-    let { children } = $props();
+    let { children, data } = $props();
 </script>
 
 <svelte:head>
@@ -14,7 +14,7 @@
 <a href="#main" class="skip-link">דלג לתוכן הראשי</a>
 
 <div class="min-h-screen flex flex-col">
-    <Header />
+    <Header user={data.user} />
     <main id="main" tabindex="-1" class="flex-grow max-w-7xl w-full mx-auto px-4 py-6">
         {@render children()}
     </main>
