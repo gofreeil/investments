@@ -6,7 +6,7 @@
         members
     } from '$lib/mockData';
 
-    const proposal = $derived(getProposal(page.params.id));
+    const proposal = $derived(page.params.id ? getProposal(page.params.id) : undefined);
     const proposedBy = $derived(proposal ? getMember(proposal.proposedBy) : undefined);
     const tally = $derived(proposal ? proposalApprovalPercent(proposal) : { yes: 0, no: 0, abstain: 0 });
     const myVote = $derived(proposal?.votes.find(v => v.memberId === currentMemberId));

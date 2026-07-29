@@ -5,7 +5,7 @@
         assetStatusLabels, assetTypeLabels, currentMemberId, memberHoldingInAsset
     } from '$lib/mockData';
 
-    const asset = $derived(getAsset(page.params.id));
+    const asset = $derived(page.params.id ? getAsset(page.params.id) : undefined);
     const myHolding = $derived(asset ? memberHoldingInAsset(asset, currentMemberId) : undefined);
     const profit = $derived(asset ? ((asset.currentValue - asset.purchasePrice) / asset.purchasePrice) * 100 : 0);
 </script>

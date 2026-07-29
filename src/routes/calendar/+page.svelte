@@ -56,7 +56,6 @@
     {:else}
         <div class="space-y-3">
             {#each upcoming as event (event.id)}
-                {@const author = getMember(event.memberId ?? '')}
                 {@const badge = dayBadge(event.date)}
                 {@const mine = getMyRsvp(event.id)}
                 {@const yesCount = event.rsvps.filter(r => r.status === 'yes').length + (myRsvp[event.id] === 'yes' && !event.rsvps.find(r => r.memberId === currentMemberId) ? 1 : 0)}
