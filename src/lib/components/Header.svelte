@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { headerHeight } from '$lib/actions/headerHeight';
     import { page } from '$app/state';
     import { currentMemberId, getMember } from '$lib/mockData';
 
@@ -24,7 +25,7 @@
     }
 </script>
 
-<header class="sticky top-0 z-50 bg-[#0b1220]/90 backdrop-blur-md border-b border-white/10">
+<header use:headerHeight class="sticky top-0 z-50 bg-[#0b1220]/90 backdrop-blur-md border-b border-white/10">
     <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
         <a href="/" class="flex items-center gap-2 font-black text-white text-lg">
             <span class="text-2xl" aria-hidden="true">🤝</span>
