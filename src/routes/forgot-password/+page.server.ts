@@ -2,6 +2,9 @@ import { fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { requestPasswordReset, RecoveryError } from '$lib/server/recovery';
 
+// האתר מוגדר כ-prerender גורף (+layout.ts); דפים עם actions חייבים להיות דינמיים.
+export const prerender = false;
+
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 /** מילוי מראש כשמגיעים מדף ההתחברות עם האימייל שכבר הוקלד שם. */

@@ -2,6 +2,9 @@ import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { confirmPasswordReset, RecoveryError, SHARED_COOKIE, sharedCookieOptions } from '$lib/server/recovery';
 
+// האתר מוגדר כ-prerender גורף (+layout.ts); דפים עם actions חייבים להיות דינמיים.
+export const prerender = false;
+
 // אחרי שהסיסמה נקבעה המשתמש נכנס מיד: שותלים את העוגייה המשותפת gofreeil-auth
 // (מחברת אותו גם בשאר אתרי הרשת) וממשיכים לגשר ה-SSO של האתר, שמקים את הסשן.
 const AFTER_RESET = '/';
